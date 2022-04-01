@@ -96,19 +96,21 @@ def test_lower_text():
 def test_directory():
     """Test Directory"""
     
-    out = getoutput(f'{prg} "-d " "./test-outs"')
-    
-    for target_files in os.listdir('test-outs'):
+    out = getoutput('python howler.py -d ./test-outs -e')
+    # out = getoutput(f'{prg} "-d ./test-outs"')
+    lists = [file for file in os.listdir('test-outs') if os.path.isfile(file)]
+
+    for target_files in lists:
         try:
-            out_file = target_files.split('.')[0]+'2.txt'
+            out_file = target_files
             if os.path.isfile(out_file):
                 os.remove(out_file)
         
             assert out.strip() == ''
-            produced = open(out_file).read().rstrip()
+            produced = open(os.path.join('./test-outs/new', (out_file))).read().rstrip()
             expected = open(os.path.join('lower',
                                          target_files)).read().strip()
-            assert expected == produced
+            assert produced == expected
         finally:
-            if os.path.isfile(out_file):
+            if os.path.isdir(out_file):
                 os.remove(out_file)

@@ -44,6 +44,9 @@ def get_args():
 
     if os.path.isfile(args.text):
         args.text = open(args.text)
+    elif os.path.isdir(args.text):
+        args.title = args.text
+        args.files = os.listdir(args.text)
     else:
         args.text = io.StringIO(args.text + '\n')
     
@@ -54,11 +57,22 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+    if args.outdir:
+        
+        os.mkdir(args.text+"/new")
+        for file in args.files:
+            text = open(os.path.join(args.text, file))
+            change_text(text, os.path.join(args.text+"/new", file), args.ee)
+            text.close()
+    else:
+        change_text(args.text, args.outfile, args.ee)
+
+# --------------------------------------------------
+def change_text(text, outfile, ee):
+    fh = open(outfile, 'wt') if outfile else sys.stdout
     
-    fh = open(args.outfile, 'wt') if args.outfile else sys.stdout
-    
-    for line in args.text:
-        fh.write(line.lower()) if args.ee else fh.write(line.upper())
+    for line in text:
+        fh.write(line.lower()) if ee else fh.write(line.upper())
         
     fh.close()
 
