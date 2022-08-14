@@ -45,13 +45,9 @@ def main():
     
     args = get_args()
     result = args.text.upper().strip()
-    if args.out_file:
-        out_fh = open(args.out_file, 'wt')
-        out_fh.write(result)
-        out_fh.close()
-    else:
-        print(result)
-        
+    out_fh = open(args.out_file, 'wt') if args.out_file else sys.stdout
+    out_fh.write(result)
+    out_fh.close()    
 
 
 
