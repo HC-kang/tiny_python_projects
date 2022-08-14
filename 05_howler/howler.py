@@ -23,13 +23,20 @@ def get_args():
                         help='A text argument')
 
     parser.add_argument('-o',
-                        '--out',
+                        '--out_file',
                         help='A named string argument',
                         metavar='str',
                         type=str,
                         default='')
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    
+    if os.path.isfile(args.text):
+        in_fh = open(args.text)
+        args.text = in_fh.read().strip()
+        in_fh.close()
+
+    return args
 
 
 # --------------------------------------------------
@@ -37,26 +44,14 @@ def main():
     """Make a jazz noise here"""
     
     args = get_args()
-    out_file = args.out
-    pos_arg = args.text
-
-    if os.path.isfile(pos_arg):
-        if (out_file):
-            out_fh = open(out_file, 'wt')
-            in_fh = open(pos_arg)
-            out_fh.write(in_fh.read().upper().strip())
-            out_fh.close()
-        else:
-            in_fh = open(pos_arg)
-            print(in_fh.read().upper().strip())
+    result = args.text.upper().strip()
+    if args.out_file:
+        out_fh = open(args.out_file, 'wt')
+        out_fh.write(result)
+        out_fh.close()
     else:
-        if (out_file):
-            out_fh = open(out_file, 'wt')
-            out_fh.write(pos_arg.upper())
-            out_fh.close()
-        else:
-            print(pos_arg.upper())
-
+        print(result)
+        
 
 
 
