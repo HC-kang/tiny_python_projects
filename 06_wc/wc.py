@@ -23,9 +23,27 @@ def get_args():
                         default=[sys.stdin],
                         type=argparse.FileType('rt'),
                         help='Input file(s)')
+    
+    parser.add_argument('-l',
+                        '--line',
+                        help='A boolean flag',
+                        action='store_true')
+    
+    parser.add_argument('-w',
+                        '--word',
+                        help='A boolean flag',
+                        action='store_true')
+    
+    parser.add_argument('-b',
+                        '--byte',
+                        help='A boolean flag',
+                        action='store_true')
 
-
-    return parser.parse_args()
+    args = parser.parse_args()
+    if (args.line or args.word or args.byte) == False:
+        args.line = args.word = args.byte = True
+        
+    return args
 
 
 # --------------------------------------------------
@@ -46,10 +64,18 @@ def main():
         total_bytes += num_bytes
         total_words += num_words
         
-        print(f'{num_lines:8}{num_words:8}{num_bytes:8} {fh.name}')
+        num_result_line = f'{num_lines:8}' if args.line else ''
+        num_result_word = f'{num_words:8}' if args.word else ''
+        num_result_byte = f'{num_bytes:8}' if args.byte else ''
+        num_result = f'{num_result_line}{num_result_word}{num_result_byte} {fh.name}'
+        print(num_result)
     
     if len(args.file) > 1:
-        print(f'{total_lines:8}{total_words:8}{total_bytes:8} total')
+        total_result_line = f'{total_lines:8}' if args.line else ''
+        total_result_word = f'{total_words:8}' if args.word else ''
+        total_result_byte = f'{total_bytes:8}' if args.byte else ''
+        total_result = f'{total_result_line}{total_result_word}{total_result_byte} total'
+        print(total_result)
 
 
 # --------------------------------------------------

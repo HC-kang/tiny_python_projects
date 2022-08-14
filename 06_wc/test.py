@@ -101,3 +101,51 @@ def test_stdin():
     rv, out = getstatusoutput(f'{prg} < {fox}')
     assert rv == 0
     assert out.rstrip() == '       1       9      46 <stdin>'
+
+
+# --------------------------------------------------
+def test_line_flag():
+    """test line flag"""
+    
+    rv, out = getstatusoutput(f'{prg} {fox} {sonnet} -l')
+    expected = ('       1 ../inputs/fox.txt\n'
+                '      17 ../inputs/sonnet-29.txt\n'
+                '      18 total')
+    assert rv == 0
+    assert out.rstrip() == expected
+
+
+# --------------------------------------------------
+def test_word_flag():
+    """test word flag"""
+    
+    rv, out = getstatusoutput(f'{prg} {fox} {sonnet} -w')
+    expected = ('       9 ../inputs/fox.txt\n'
+                '     118 ../inputs/sonnet-29.txt\n'
+                '     127 total')
+    assert rv == 0
+    assert out.rstrip() == expected
+
+
+# --------------------------------------------------
+def test_byte_flag():
+    """test byte flag"""
+    
+    rv, out = getstatusoutput(f'{prg} {fox} {sonnet} -b')
+    expected = ('      45 ../inputs/fox.txt\n'
+                '     661 ../inputs/sonnet-29.txt\n'
+                '     706 total')
+    assert rv == 0
+    assert out.rstrip() == expected
+
+
+# --------------------------------------------------
+def test_lw_flag():
+    """test lw flag"""
+    
+    rv, out = getstatusoutput(f'{prg} {fox} {sonnet} -lw')
+    expected = ('       1       9 ../inputs/fox.txt\n'
+                '      17     118 ../inputs/sonnet-29.txt\n'
+                '      18     127 total')
+    assert rv == 0
+    assert out.rstrip() == expected
