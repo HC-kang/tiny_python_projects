@@ -25,7 +25,7 @@ def get_args():
                         '--file',
                         help='A named string argument',
                         metavar='str',
-                        type=str,
+                        type=argparse.FileType('rt'),
                         default='gashlycrumb.txt')
 
     return parser.parse_args()
@@ -36,8 +36,7 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    fh = open(args.file, 'rt')
-    lookup = {line[0].upper(): line.strip() for line in fh}
+    lookup = {line[0].upper(): line.strip() for line in args.file}
     pos_arg = args.positional
     for p in pos_arg:
         print(lookup.get(p.upper(), f'I do not know "{p}".'))
