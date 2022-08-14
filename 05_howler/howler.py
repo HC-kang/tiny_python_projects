@@ -6,6 +6,7 @@ Purpose: Rock the Casbah
 """
 
 import os
+import io
 import sys
 import argparse
 
@@ -32,9 +33,9 @@ def get_args():
     args = parser.parse_args()
     
     if os.path.isfile(args.text):
-        in_fh = open(args.text)
-        args.text = in_fh.read().strip()
-        in_fh.close()
+        args.text = open(args.text)
+    else:
+        args.text = io.StringIO(args.text + '\n')
 
     return args
 
@@ -44,9 +45,9 @@ def main():
     """Make a jazz noise here"""
     
     args = get_args()
-    result = args.text.upper().strip()
     out_fh = open(args.out_file, 'wt') if args.out_file else sys.stdout
-    out_fh.write(result)
+    for line in args.text:
+        out_fh.write(line.upper())
     out_fh.close()    
 
 
