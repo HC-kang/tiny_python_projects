@@ -63,3 +63,10 @@ def test_file_with_vowel():
     
     out = getoutput(f'{prg} --vowel o {fox}')
     assert out.strip() == 'Tho qoock brown fox jomps ovor tho lozy dog.'
+
+
+# --------------------------------------------------
+def test_squeeze():
+    
+    out = getoutput(f'{prg} --squeeze {fox}')
+    assert out.rstrip() == 'Tha qack brawn fax jamps avar tha lazy dag.'

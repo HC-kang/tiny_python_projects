@@ -29,6 +29,11 @@ def get_args():
                         type=str,
                         default='a',
                         choices=list('aeiou'))
+    
+    parser.add_argument('-s',
+                        '--squeeze',
+                        help='A boolean flag',
+                        action='store_true')
 
     args = parser.parse_args()
     
@@ -51,8 +56,13 @@ def main():
     for C in 'AEIOU':
         lookup[C] = args.vowel.upper()
     
+    before_t = ''
     for t in args.text.strip():
-        print(lookup.get(t, t), end='')
+        t = lookup.get(t, t)
+        if t != before_t:
+            print(t, end='')
+        if args.squeeze:
+            before_t = t
 
 
 # --------------------------------------------------
